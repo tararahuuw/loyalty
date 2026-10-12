@@ -29,7 +29,9 @@ const RefreshToken = ({ children, handleSetUserInfo, handleResetStore }) => {
 
   const insertUser = async (response) => {
     try {
-      localStorage.setItem("token", response.data.token);
+      // Keep in sync with login's JSON.stringify fix — every axios interceptor reads this
+      // back with JSON.parse(localStorage.getItem("token")).
+      localStorage.setItem("token", JSON.stringify(response.data.token));
       handleSetUserInfo({
         userId: response.data.userId,
         userName: response.data.userName,

@@ -19,8 +19,14 @@ import InventoryRoutes from "./InventoryRoutes/InventoryRoutes";
 import RefreshToken from "../../provider/RefreshToken";
 import RedeemVoucherRoutes from "./RedeemVoucherRoutes/RedeemVoucherRoutes";
 import LoadingRedeemPage from "../../pages/loadingRedeemPage";
+import Login from "../../pages/authentication/login";
+import Layout from "../../components/Layout/Layout";
+import ForgotPassword from "../../pages/authentication/forgotpassword";
+import Register from "../../pages/authentication/register";
+import ResetPassword from "../../pages/authentication/resetpassword";
+import VerifyEmail from "../../pages/authentication/verifyemail";
 
-const Routing = ({ userInfo, balance, currentUser }) => {
+const Routing = ({ userInfo, balance, currentUser, handleSetUserInfo }) => {
   const {
     adminRemoteIsUp,
     rewardRemoteIsUp,
@@ -34,7 +40,15 @@ const Routing = ({ userInfo, balance, currentUser }) => {
   const [titleHeader, setTitleHeader] = useState("");
   return (
     <BrowserRouter>
+      <Layout userInfo={userInfo} titleHeader={titleHeader} handleSetUserInfo={handleSetUserInfo} balance={balance}>
       <Routes>
+        {/* Login (unauthenticated landing page) */}
+        <Route path="/" element={<Login />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/verify-email" element={<VerifyEmail />} />
+
         <Route
           path="/prezent/*"
           element={
@@ -162,6 +176,7 @@ const Routing = ({ userInfo, balance, currentUser }) => {
           }
         />
       </Routes>
+      </Layout>
     </BrowserRouter>
   );
 };

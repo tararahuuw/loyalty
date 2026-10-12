@@ -15,7 +15,15 @@ const Layout = ({ children, userInfo, titleHeader, handleSetUserInfo, balance })
 
   const excludedPath = ["/", "/register", "/forgot-password", "/reset-password", "/verify-email", "/error-page"];
 
-  const [token, setToken] = useState(localStorage.getItem("token") || null);
+  // token is stored JSON.stringify'd (see login/index.js) — must be parsed back the same way,
+  // otherwise decodeJWT() below receives a quoted string and breaks on the first "." split.
+  const [token, setToken] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem("token")) || null;
+    } catch {
+      return null;
+    }
+  });
 
   const navigateTo = useNavigate();
 

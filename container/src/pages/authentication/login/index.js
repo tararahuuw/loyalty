@@ -77,7 +77,15 @@ const Login = ({ timerBanned, handleSetTimerBanned, handleSetUserInfo }) => {
   }, [timerBanned]);
 
   function handleGuardNavigation() {
-    const token = JSON.parse(localStorage.getItem("token"));
+    // Defensive JSON.parse: a token written before the JSON.stringify fix (or corrupted some
+    // other way) would throw here and crash the whole page with a blank/error overlay instead
+    // of just showing the login form. Treat anything unparsable as "not logged in".
+    let token = null;
+    try {
+      token = JSON.parse(localStorage.getItem("token"));
+    } catch {
+      localStorage.removeItem("token");
+    }
     if (token) {
       setIsUserLogin(true);
       navigateTo("/prezent/campaign");
@@ -95,7 +103,12 @@ const Login = ({ timerBanned, handleSetTimerBanned, handleSetUserInfo }) => {
   }
 
   function handleNavigateToDashboard() {
-    const token = JSON.parse(localStorage.getItem("token"));
+    let token = null;
+    try {
+      token = JSON.parse(localStorage.getItem("token"));
+    } catch {
+      /* treated as logged out below */
+    }
     setTimeout(() => {
       if (token) {
         navigateTo("/prezent/campaign");
@@ -103,6 +116,73 @@ const Login = ({ timerBanned, handleSetTimerBanned, handleSetUserInfo }) => {
         navigateTo("/");
       }
     }, 500);
+  }
+
+  // DEV ONLY: lets you reach the authenticated sidebar/layout locally without a
+  // working backend. Gated by NODE_ENV so it never ships in a production build
+  // (webpack sets NODE_ENV=production for `npm run build*`).
+  function handleDevBypassLogin() {
+    // Prefer a real production token (REACT_APP_DEV_TOKEN, set in your local .env.development,
+    // gitignored) so API calls actually authenticate against the real backend — falls back to a
+    // throwaway fake token if you haven't set one, which will hit real URLs but get 401s.
+    const devToken = process.env.REACT_APP_DEV_TOKEN;
+    let claims = {};
+    if (devToken) {
+      try {
+        claims = JSON.parse(atob(devToken.split(".")[1].replace(/-/g, "+").replace(/_/g, "/")));
+      } catch {
+        claims = {};
+      }
+    }
+
+    const base64Url = (obj) =>
+      btoa(JSON.stringify(obj)).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+    const fakeToken = `${base64Url({ alg: "none", typ: "JWT" })}.${base64Url({
+      exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24,
+    })}.dev-signature`;
+
+    const token = devToken || fakeToken;
+
+    // Exact valueLogin shape captured from a real logged-in session (REACT_APP_DEV_VALUE_LOGIN,
+    // gitignored .env.development). Prezent code only reads corporateId/phoneNumber/email off
+    // this object, but we keep the full shape for parity with production.
+    let valueLogin = {
+      corporateId: claims.CorporateId || "dev-corp",
+      phoneNumber: claims.PhoneNumber || "081234567890",
+      email: claims.Email || "dev@local.test",
+    };
+    if (process.env.REACT_APP_DEV_VALUE_LOGIN) {
+      try {
+        valueLogin = JSON.parse(process.env.REACT_APP_DEV_VALUE_LOGIN);
+      } catch {
+        /* fall back to the claims-derived shape above */
+      }
+    }
+
+    // Stored JSON.stringify'd — every axios interceptor in every microfrontend reads it back
+    // with JSON.parse(localStorage.getItem("token")), so the raw string must match that shape
+    // (this mirrors a pre-existing bug in the real login flow below, fixed here too).
+    localStorage.setItem("token", JSON.stringify(token));
+    localStorage.setItem("accessGroupName", JSON.stringify(claims.accessGroupName || "Client Admin - Loyalty"));
+    localStorage.setItem("valueLogin", JSON.stringify(valueLogin));
+    localStorage.setItem("userName", JSON.stringify(claims.UserName || claims.FullName || "Dev User"));
+
+    handleSetUserInfo({
+      userId: claims.UserId || "dev-user-id",
+      userName: claims.UserName || claims.FullName || "Dev User",
+      roleId: claims.RoleId || "dev-role",
+      roleName: "Client Administrator",
+      clientId: valueLogin.corporateId,
+      divisionId: valueLogin.divisionId || "dev-division",
+      clientName: claims.CorporateName || "Dev Client",
+      divisionName: valueLogin.divisionName || "Dev Division",
+      divisionBillingType: "Prepaid",
+      isInternal: false,
+      phoneNumber: valueLogin.phoneNumber,
+      email: valueLogin.email,
+    });
+
+    navigateTo("/prezent/campaign");
   }
 
   function handleOpenModalResult(type, subtitle) {
@@ -125,7 +205,10 @@ const Login = ({ timerBanned, handleSetTimerBanned, handleSetUserInfo }) => {
       };
       var response = await PostLoginUser(request);
       if (response) {
-        localStorage.setItem("token", response.data.token);
+        // Pre-existing bug fix: every axios interceptor across all microfrontends reads this
+        // back with JSON.parse(localStorage.getItem("token")), which throws on a raw JWT
+        // string — meaning the Authorization header was silently never attached anywhere.
+        localStorage.setItem("token", JSON.stringify(response.data.token));
         handleSetUserInfo({
           userId: response.data.userId,
           userName: response.data.userName,
@@ -235,6 +318,17 @@ const Login = ({ timerBanned, handleSetTimerBanned, handleSetUserInfo }) => {
             <div className="mx-6">
               <PrimaryButton type="full" title="Sign in" size="large" isSubmit={true} />
             </div>
+            {process.env.NODE_ENV === "development" && (
+              <div className="mx-6 mb-4 -mt-2">
+                <button
+                  type="button"
+                  onClick={handleDevBypassLogin}
+                  className="w-full text-center text-xs text-neutral300 underline"
+                >
+                  Dev only: skip login (no backend needed)
+                </button>
+              </div>
+            )}
             <div className="flex justify-center mx-6 mt-8 mb-6">
               <p className="text-black font-normal">Don't have an account? </p>
               <p className="text-primary500 font-medium cursor-pointer ml-1" onClick={handleNavigateToSignUp}>
