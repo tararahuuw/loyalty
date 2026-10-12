@@ -1,0 +1,24 @@
+.react-datepicker__header {
+  background-color: hsl(0, 0%, 100%) !important;
+  border: 0px !important;
+}
+
+.react-datepicker__month-container {
+  margin-right: 10px !important;
+}
+
+.react-datepicker__time-container {
+  padding-left: 10px !important;
+}
+
+.react-datepicker__time-container .react-datepicker__time .react-datepicker__time-box ul.react-datepicker__time-list {
+  height: 250px !important;
+}
+
+.is-end-date
+  .react-datepicker__time-container
+  .react-datepicker__time
+  .react-datepicker__time-box
+  ul.react-datepicker__time-list {
+  height: 300px !important;
+}

@@ -1,0 +1,437 @@
+# ================================ PRODUCTION ================================
+
+# ---------------
+# Container Service
+# ---------------
+deploy_container_prod:
+  stage: deploy
+  tags:
+    - container-prod
+  image: ubuntu:latest
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      changes:
+        - container/**/*
+  before_script:
+    - apt-get -yq update
+    - apt-get -yqq install ssh
+    - install -m 600 -D /dev/null ~/.ssh/id_rsa
+    - echo "$SSH_PRIVATE_KEY_PROD" | base64 -d > ~/.ssh/id_rsa
+    - ssh-keyscan -H $SSH_HOST_PROD > ~/.ssh/known_hosts
+  script:
+    - echo "Deploying Container Service..."
+    - ssh $SSH_USER@$SSH_HOST_PROD "cd $WORK_DIR && git checkout $PROD_BRANCH && git pull && cd container && docker compose down -v && docker compose up --build -d frontend-container"
+  after_script:
+    - rm -rf ~/.ssh
+
+# ---------------
+# Account Service
+# ---------------
+deploy_account_prod:
+  stage: deploy
+  tags:
+    - account-prod
+  image: ubuntu:latest
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      changes:
+        - account/**/*
+  before_script:
+    - apt-get -yq update
+    - apt-get -yqq install ssh
+    - install -m 600 -D /dev/null ~/.ssh/id_rsa
+    - echo "$SSH_PRIVATE_KEY_PROD" | base64 -d > ~/.ssh/id_rsa
+    - ssh-keyscan -H $SSH_HOST_PROD > ~/.ssh/known_hosts
+  script:
+    - echo "Deploying Account Service..."
+    - ssh $SSH_USER@$SSH_HOST_PROD "cd $WORK_DIR && git checkout $PROD_BRANCH && git pull && cd account && docker compose down -v && docker compose up --build -d frontend-account"
+  after_script:
+    - rm -rf ~/.ssh
+
+# ---------------
+# Campaign Service
+# ---------------
+deploy_campaign_prod:
+  stage: deploy
+  tags:
+    - campaign-prod
+  image: ubuntu:latest
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      changes:
+        - campaign/**/*
+  before_script:
+    - apt-get -yq update
+    - apt-get -yqq install ssh
+    - install -m 600 -D /dev/null ~/.ssh/id_rsa
+    - echo "$SSH_PRIVATE_KEY_PROD" | base64 -d > ~/.ssh/id_rsa
+    - ssh-keyscan -H $SSH_HOST_PROD > ~/.ssh/known_hosts
+  script:
+    - echo "Deploying Campaign Service..."
+    - ssh $SSH_USER@$SSH_HOST_PROD "cd $WORK_DIR && git checkout $PROD_BRANCH && git pull && cd campaign && docker compose down -v && docker compose up --build -d frontend-campaign"
+  after_script:
+    - rm -rf ~/.ssh
+
+# ---------------
+# Engagement Service
+# ---------------
+deploy_engagement_prod:
+  stage: deploy
+  tags:
+    - engagement-prod
+  image: ubuntu:latest
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      changes:
+        - engagement/**/*
+  before_script:
+    - apt-get -yq update
+    - apt-get -yqq install ssh
+    - install -m 600 -D /dev/null ~/.ssh/id_rsa
+    - echo "$SSH_PRIVATE_KEY_PROD" | base64 -d > ~/.ssh/id_rsa
+    - ssh-keyscan -H $SSH_HOST_PROD > ~/.ssh/known_hosts
+  script:
+    - echo "Deploying Engagement Service..."
+    - ssh $SSH_USER@$SSH_HOST_PROD "cd $WORK_DIR && git checkout $PROD_BRANCH && git pull && cd engagement && docker compose down -v && docker compose up --build -d frontend-engagement"
+  after_script:
+    - rm -rf ~/.ssh
+
+# ---------------
+# Inventory Service
+# ---------------
+deploy_inventory_prod:
+  stage: deploy
+  tags:
+    - inventory-prod
+  image: ubuntu:latest
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      changes:
+        - inventory/**/*
+  before_script:
+    - apt-get -yq update
+    - apt-get -yqq install ssh
+    - install -m 600 -D /dev/null ~/.ssh/id_rsa
+    - echo "$SSH_PRIVATE_KEY_PROD" | base64 -d > ~/.ssh/id_rsa
+    - ssh-keyscan -H $SSH_HOST_PROD > ~/.ssh/known_hosts
+  script:
+    - echo "Deploying Inventory Service..."
+    - ssh $SSH_USER@$SSH_HOST_PROD "cd $WORK_DIR && git checkout $PROD_BRANCH && git pull && cd inventory && docker compose down -v && docker compose up --build -d frontend-inventory"
+  after_script:
+    - rm -rf ~/.ssh
+
+# ---------------
+# Report Service
+# ---------------
+deploy_report_prod:
+  stage: deploy
+  tags:
+    - report-prod
+  image: ubuntu:latest
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      changes:
+        - report/**/*
+  before_script:
+    - apt-get -yq update
+    - apt-get -yqq install ssh
+    - install -m 600 -D /dev/null ~/.ssh/id_rsa
+    - echo "$SSH_PRIVATE_KEY_PROD" | base64 -d > ~/.ssh/id_rsa
+    - ssh-keyscan -H $SSH_HOST_PROD > ~/.ssh/known_hosts
+  script:
+    - echo "Deploying Report Service..."
+    - ssh $SSH_USER@$SSH_HOST_PROD "cd $WORK_DIR && git checkout $PROD_BRANCH && git pull && cd report && docker compose down -v && docker compose up --build -d frontend-report"
+  after_script:
+    - rm -rf ~/.ssh
+
+# ---------------
+# Reward Service
+# ---------------
+deploy_reward_prod:
+  stage: deploy
+  tags:
+    - reward-prod
+  image: ubuntu:latest
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      changes:
+        - reward/**/*
+  before_script:
+    - apt-get -yq update
+    - apt-get -yqq install ssh
+    - install -m 600 -D /dev/null ~/.ssh/id_rsa
+    - echo "$SSH_PRIVATE_KEY_PROD" | base64 -d > ~/.ssh/id_rsa
+    - ssh-keyscan -H $SSH_HOST_PROD > ~/.ssh/known_hosts
+  script:
+    - echo "Deploying Reward Service..."
+    - ssh $SSH_USER@$SSH_HOST_PROD "cd $WORK_DIR && git checkout $PROD_BRANCH && git pull && cd reward && docker compose down -v && docker compose up --build -d frontend-reward"
+  after_script:
+    - rm -rf ~/.ssh
+
+# ---------------
+# Setting Service
+# ---------------
+deploy_setting_prod:
+  stage: deploy
+  tags:
+    - setting-prod
+  image: ubuntu:latest
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      changes:
+        - setting/**/*
+  before_script:
+    - apt-get -yq update
+    - apt-get -yqq install ssh
+    - install -m 600 -D /dev/null ~/.ssh/id_rsa
+    - echo "$SSH_PRIVATE_KEY_PROD" | base64 -d > ~/.ssh/id_rsa
+    - ssh-keyscan -H $SSH_HOST_PROD > ~/.ssh/known_hosts
+  script:
+    - echo "Deploying Setting Service..."
+    - ssh $SSH_USER@$SSH_HOST_PROD "cd $WORK_DIR && git checkout $PROD_BRANCH && git pull && cd setting && docker compose down -v && docker compose up --build -d frontend-setting"
+  after_script:
+    - rm -rf ~/.ssh
+
+# ---------------
+# Redeem Service
+# ---------------
+deploy_redeem_prod:
+  stage: deploy
+  tags:
+    - redeem-prod
+  image: ubuntu:latest
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      changes:
+        - redeem/**/*
+  before_script:
+    - apt-get -yq update
+    - apt-get -yqq install ssh
+    - install -m 600 -D /dev/null ~/.ssh/id_rsa
+    - echo "$SSH_PRIVATE_KEY_PROD" | base64 -d > ~/.ssh/id_rsa
+    - ssh-keyscan -H $SSH_HOST_PROD > ~/.ssh/known_hosts
+  script:
+    - echo "Deploying Redeem Service..."
+    - ssh $SSH_USER@$SSH_HOST_PROD "cd $WORK_DIR && git checkout $PROD_BRANCH && git pull && cd redeem && docker compose down -v && docker compose up --build -d frontend-redeem"
+  after_script:
+    - rm -rf ~/.ssh
+
+
+# ================================ STAGING ================================
+
+
+# ---------------
+# Container Service
+# ---------------
+deploy_container:
+  stage: deploy
+  tags:
+    - container
+  image: ubuntu:latest
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "staging"'
+      changes:
+        - container/**/*
+  before_script:
+    - apt-get -yq update
+    - apt-get -yqq install ssh
+    - install -m 600 -D /dev/null ~/.ssh/id_rsa
+    - echo "$SSH_PRIVATE_KEY" | base64 -d > ~/.ssh/id_rsa
+    - ssh-keyscan -H $SSH_HOST > ~/.ssh/known_hosts
+  script:
+    - echo "Deploying Container Service..."
+    - ssh $SSH_USER@$SSH_HOST "cd $WORK_DIR && git checkout $STAGING_BRANCH && git pull && cd container && docker compose down -v && docker compose up --build -d frontend-staging"
+  after_script:
+    - rm -rf ~/.ssh
+
+# ---------------
+# Account Service
+# ---------------
+deploy_account:
+  stage: deploy
+  tags:
+    - account
+  image: ubuntu:latest
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "staging"'
+      changes:
+        - account/**/*
+  before_script:
+    - apt-get -yq update
+    - apt-get -yqq install ssh
+    - install -m 600 -D /dev/null ~/.ssh/id_rsa
+    - echo "$SSH_PRIVATE_KEY" | base64 -d > ~/.ssh/id_rsa
+    - ssh-keyscan -H $SSH_HOST > ~/.ssh/known_hosts
+  script:
+    - echo "Deploying Account Service..."
+    - ssh $SSH_USER@$SSH_HOST "cd $WORK_DIR && git checkout $STAGING_BRANCH && git pull && cd account && docker compose down -v && docker compose up --build -d frontend-staging"
+  after_script:
+    - rm -rf ~/.ssh
+
+# ---------------
+# Campaign Service
+# ---------------
+deploy_campaign:
+  stage: deploy
+  tags:
+    - campaign
+  image: ubuntu:latest
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "staging"'
+      changes:
+        - campaign/**/*
+  before_script:
+    - apt-get -yq update
+    - apt-get -yqq install ssh
+    - install -m 600 -D /dev/null ~/.ssh/id_rsa
+    - echo "$SSH_PRIVATE_KEY" | base64 -d > ~/.ssh/id_rsa
+    - ssh-keyscan -H $SSH_HOST > ~/.ssh/known_hosts
+  script:
+    - echo "Deploying Campaign Service..."
+    - ssh $SSH_USER@$SSH_HOST "cd $WORK_DIR && git checkout $STAGING_BRANCH && git pull && cd campaign && docker compose down -v && docker compose up --build -d frontend-staging"
+  after_script:
+    - rm -rf ~/.ssh
+
+# ---------------
+# Engagement Service
+# ---------------
+deploy_engagement:
+  stage: deploy
+  tags:
+    - engagement
+  image: ubuntu:latest
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "staging"'
+      changes:
+        - engagement/**/*
+  before_script:
+    - apt-get -yq update
+    - apt-get -yqq install ssh
+    - install -m 600 -D /dev/null ~/.ssh/id_rsa
+    - echo "$SSH_PRIVATE_KEY" | base64 -d > ~/.ssh/id_rsa
+    - ssh-keyscan -H $SSH_HOST > ~/.ssh/known_hosts
+  script:
+    - echo "Deploying Engagement Service..."
+    - ssh $SSH_USER@$SSH_HOST "cd $WORK_DIR && git checkout $STAGING_BRANCH && git pull && cd engagement && docker compose down -v && docker compose up --build -d frontend-staging"
+  after_script:
+    - rm -rf ~/.ssh
+
+# ---------------
+# Inventory Service
+# ---------------
+deploy_inventory:
+  stage: deploy
+  tags:
+    - inventory
+  image: ubuntu:latest
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "staging"'
+      changes:
+        - inventory/**/*
+  before_script:
+    - apt-get -yq update
+    - apt-get -yqq install ssh
+    - install -m 600 -D /dev/null ~/.ssh/id_rsa
+    - echo "$SSH_PRIVATE_KEY" | base64 -d > ~/.ssh/id_rsa
+    - ssh-keyscan -H $SSH_HOST > ~/.ssh/known_hosts
+  script:
+    - echo "Deploying Inventory Service..."
+    - ssh $SSH_USER@$SSH_HOST "cd $WORK_DIR && git checkout $STAGING_BRANCH && git pull && cd inventory && docker compose down -v && docker compose up --build -d frontend-staging"
+  after_script:
+    - rm -rf ~/.ssh
+
+# ---------------
+# Report Service
+# ---------------
+deploy_report:
+  stage: deploy
+  tags:
+    - report
+  image: ubuntu:latest
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "staging"'
+      changes:
+        - report/**/*
+  before_script:
+    - apt-get -yq update
+    - apt-get -yqq install ssh
+    - install -m 600 -D /dev/null ~/.ssh/id_rsa
+    - echo "$SSH_PRIVATE_KEY" | base64 -d > ~/.ssh/id_rsa
+    - ssh-keyscan -H $SSH_HOST > ~/.ssh/known_hosts
+  script:
+    - echo "Deploying Report Service..."
+    - ssh $SSH_USER@$SSH_HOST "cd $WORK_DIR && git checkout $STAGING_BRANCH && git pull && cd report && docker compose down -v && docker compose up --build -d frontend-staging"
+  after_script:
+    - rm -rf ~/.ssh
+
+# ---------------
+# Reward Service
+# ---------------
+deploy_reward:
+  stage: deploy
+  tags:
+    - reward
+  image: ubuntu:latest
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "staging"'
+      changes:
+        - reward/**/*
+  before_script:
+    - apt-get -yq update
+    - apt-get -yqq install ssh
+    - install -m 600 -D /dev/null ~/.ssh/id_rsa
+    - echo "$SSH_PRIVATE_KEY" | base64 -d > ~/.ssh/id_rsa
+    - ssh-keyscan -H $SSH_HOST > ~/.ssh/known_hosts
+  script:
+    - echo "Deploying Reward Service..."
+    - ssh $SSH_USER@$SSH_HOST "cd $WORK_DIR && git checkout $STAGING_BRANCH && git pull && cd reward && docker compose down -v && docker compose up --build -d frontend-staging"
+  after_script:
+    - rm -rf ~/.ssh
+
+# ---------------
+# Setting Service
+# ---------------
+deploy_setting:
+  stage: deploy
+  tags:
+    - setting
+  image: ubuntu:latest
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "staging"'
+      changes:
+        - setting/**/*
+  before_script:
+    - apt-get -yq update
+    - apt-get -yqq install ssh
+    - install -m 600 -D /dev/null ~/.ssh/id_rsa
+    - echo "$SSH_PRIVATE_KEY" | base64 -d > ~/.ssh/id_rsa
+    - ssh-keyscan -H $SSH_HOST > ~/.ssh/known_hosts
+  script:
+    - echo "Deploying Setting Service..."
+    - ssh $SSH_USER@$SSH_HOST "cd $WORK_DIR && git checkout $STAGING_BRANCH && git pull && cd setting && docker compose down -v && docker compose up --build -d frontend-staging"
+  after_script:
+    - rm -rf ~/.ssh
+
+# ---------------
+# Redeem Service
+# ---------------
+deploy_redeem:
+  stage: deploy
+  tags:
+    - redeem
+  image: ubuntu:latest
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "staging"'
+      changes:
+        - redeem/**/*
+  before_script:
+    - apt-get -yq update
+    - apt-get -yqq install ssh
+    - install -m 600 -D /dev/null ~/.ssh/id_rsa
+    - echo "$SSH_PRIVATE_KEY" | base64 -d > ~/.ssh/id_rsa
+    - ssh-keyscan -H $SSH_HOST > ~/.ssh/known_hosts
+  script:
+    - echo "Deploying Redeem Service..."
+    - ssh $SSH_USER@$SSH_HOST "cd $WORK_DIR && git checkout $STAGING_BRANCH && git pull && cd redeem && docker compose down -v && docker compose up --build -d frontend-staging"
+  after_script:
+    - rm -rf ~/.ssh

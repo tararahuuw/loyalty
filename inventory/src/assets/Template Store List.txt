@@ -1,0 +1,3 @@
+StoreID;StoreName;StorePhoneNumber;Province;City/Regencies;District;DetailAddress;PostalCode
+STR001;Setara1;6289623853576;DKI Jakarta;Jakarta Selatan;Kebayoran Baru;Jl. Fatmawati Raya;12210
+STR002;Setara2;6289623853577;Banten;Tangerang Selatan;Pamulang;Jl. Raya Pamulang;12210

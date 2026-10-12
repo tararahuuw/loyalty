@@ -1,0 +1,99 @@
+.dataTable_Box {
+  position: relative;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  background-color: white;
+  border-radius: 0 0 20px 20px;
+}
+
+.dataTable_Body {
+  position: relative;
+  overflow-x: auto;
+  padding: 28px;
+  border-top: 1px solid #ececec;
+}
+
+.card {
+  border-radius: 10px;
+  border: 1px solid #ececec;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+.card-image {
+  height: 200px;
+  width: 100%;
+  object-fit: cover;
+  border-radius: 10px 10px 0px 0px;
+}
+
+.description {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.dataTable_Footer {
+  padding: 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.showingInfo {
+  flex: 1 1 0%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}
+
+.pagination {
+  flex: 1 1 0%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+}
+
+.pagination button {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  text-align: center;
+  color: #121214;
+  border: 1px solid #e0e0e0;
+  cursor: pointer;
+}
+
+.btnPage {
+  background-color: white;
+  color: #121214;
+  transition: all 0.3s ease-in-out;
+}
+
+.btnPage:hover {
+  color: white;
+  background-color: #034ea2 !important;
+}
+
+.btnPage_Active {
+  background-color: #034ea2 !important;
+  color: white !important;
+}
+
+.btnQuick {
+  background-color: #f6f6f6 !important;
+}
+
+@media only screen and (max-width: 876px) {
+  .dataTable_Footer {
+    flex-direction: column;
+    gap: 0.875rem;
+  }
+}

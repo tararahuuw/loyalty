@@ -1,0 +1,9 @@
+Category (Level 1-5);Brand;Product Name;Master SKU;Specification 1;Specification 2;SKU;Price
+Fashion - Men - Clothing - Tops - Thermal;Sandeza;Men - Thermal Inner Long Sleeve;PRDSPR-00001;Black;S;PRDSPR-00001-BLACK-S;120000
+Fashion - Men - Clothing - Tops - Thermal;Sandeza;Men - Thermal Inner Long Sleeve;PRDSPR-00001;Black;M;PRDSPR-00001-BLACK-M;120000
+Fashion - Men - Clothing - Tops - Thermal;Sandeza;Men - Thermal Inner Long Sleeve;PRDSPR-00001;Black;L;PRDSPR-00001-BLACK-L;120000
+Fashion - Men - Clothing - Tops - Thermal;Sandeza;Men - Thermal Inner Long Sleeve;PRDSPR-00001;Black;XL;PRDSPR-00001-BLACK-XL;120000
+Fashion - Men - Clothing - Tops - Thermal;Sandeza;Men - Thermal Inner Long Sleeve;PRDSPR-00001;White;S;PRDSPR-00001-WHITE-S;120000
+Fashion - Men - Clothing - Tops - Thermal;Sandeza;Men - Thermal Inner Long Sleeve;PRDSPR-00001;White;M;PRDSPR-00001-WHITE-M;120000
+Fashion - Men - Clothing - Tops - Thermal;Sandeza;Men - Thermal Inner Long Sleeve;PRDSPR-00001;White;L;PRDSPR-00001-WHITE-L;120000
+Fashion - Men - Clothing - Tops - Thermal;Sandeza;Men - Thermal Inner Long Sleeve;PRDSPR-00001;White;XL;PRDSPR-00001-WHITE-XL;120000

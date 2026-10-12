@@ -1,0 +1,36 @@
+version: "3.8"
+
+services:
+  frontend-account:
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: Dockerfile.react
+    ports:
+      - "3001:3001"
+    networks:
+      - frontend_bridge
+
+  frontend-staging:
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: Dockerfile.react.staging
+    ports:
+      - "3001:3001"
+    networks:
+      - frontend_bridge
+
+  frontend-development:
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: Dockerfile.react.development
+    ports:
+      - "3001:3001"
+    networks:
+      - frontend_bridge
+
+networks:
+  frontend_bridge:
+    external: true

@@ -1,0 +1,4 @@
+Recipient Name;Phone Number; Email
+Andi Pratama;6281234567890;andi.pratama@email.com
+Bella Anindya;6281234567890;bella.anindya@email.com
+Citra Maharani;6281234567890;citra.maharani@email.com
